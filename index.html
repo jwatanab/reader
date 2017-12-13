@@ -1,0 +1,33 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>reader</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <input id="file" type="file" multiple />
+</body>
+<script>
+    const HTMLInputElementTypeOfFile = document.getElementById('file')
+    HTMLInputElementTypeOfFile.onchange = () => {
+        for (let i = 0; i < HTMLInputElementTypeOfFile.files.length; i++) {
+            const fr = new FileReader();
+            const PromiseReader = new Promise((resolve, reject) => {
+                resolve(fr.readAsArrayBuffer(HTMLInputElementTypeOfFile.files[i]));
+            });
+            PromiseReader.then(() => {
+                fr.onload = () => {
+                    const u8 = new Uint8Array(fr.result)
+                    const blob = new Blob([u8], { type: "image/jpeg" });
+                    const url = URL.createObjectURL(blob);
+                }
+            });
+        };
+    }
+</script>
+
+</html>
